@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
+import axios from "axios";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "vue-sonner";
-import axios from "axios";
 import { useRouter } from "vue-router";
+import { useUser } from "@/hooks";
 
 const router = useRouter();
+const user = useUser();
 
 const isLoading = ref(false);
+
 async function onSubmit(event: Event) {
   event.preventDefault();
   isLoading.value = true;
@@ -24,6 +26,11 @@ async function onSubmit(event: Event) {
     .then((res) => {
       isLoading.value = false;
       if (res.data.err_code === 0) {
+        user.setUser({
+          name: email.value.split("@")[0],
+          email: email.value,
+          isLoggedIn: true,
+        });
         router.push({ path: "/dashboard" });
       } else {
         toast.error(res.data.err_msg);

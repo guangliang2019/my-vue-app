@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { Toaster } from "@/components/ui/sonner";
+import { UserProvider } from "./hooks";
 </script>
 
 <template>
-  <Toaster />
-  <RouterView />
+  <UserProvider>
+    <Toaster />
+    <RouterView />
+  </UserProvider>
 </template>
